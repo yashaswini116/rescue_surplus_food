@@ -195,7 +195,7 @@ export default function DashboardLayout({ children, role = 'donor' }) {
         <main style={{ flex: 1, overflowY: 'auto', padding: '2rem' }}>
           <AnimatePresence mode="wait">
             <motion.div
-              key={pathname}
+              key={pathname || 'loading'}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}

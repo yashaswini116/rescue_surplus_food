@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth, db } from '../services/firebase';
-import { doc, getDoc, setDoc, enableIndexedDbPersistence } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 const AuthContext = createContext({});
 
@@ -13,19 +13,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Attempt to enable offline persistence if browser supports it
-    try {
-      enableIndexedDbPersistence(db).catch((err) => {
-        if (err.code === 'failed-precondition') {
-          console.warn("Firestore Logic: Persistence failed - Multiple tabs open");
-        } else if (err.code === 'unimplemented') {
-          console.warn("Firestore Logic: Persistence failed - Browser unsupported");
-        }
-      });
-    } catch (e) {
-      // Ignore errors in non-browser environments or unsupported setups
-    }
-
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       try {
         if (user) {
